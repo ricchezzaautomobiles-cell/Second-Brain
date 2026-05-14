@@ -46,7 +46,7 @@ export default function Landing() {
           >
             <div className="flex items-center justify-center gap-3 mb-6">
               <span className="h-[1px] w-8 bg-white/10" />
-              <span className="text-[10px] font-bold text-white/40 uppercase tracking-[0.4em]">Engineered Intelligence</span>
+              <span className="text-[10px] font-bold text-white/40 uppercase tracking-[0.4em]">Strategic Peace of Mind</span>
               <span className="h-[1px] w-8 bg-white/10" />
             </div>
             
@@ -86,7 +86,7 @@ export default function Landing() {
                 </div>
               </form>
               <p className="mt-6 text-[10px] text-white/20 uppercase tracking-[0.3em] font-black italic">
-                Strategic clarity is one input away.
+                Strategic clarity is the beginning of mental relief.
               </p>
             </motion.div>
           </motion.div>
@@ -105,14 +105,14 @@ export default function Landing() {
           </motion.div>
         </section>
 
-        {/* Global Impact / Stats */}
+        {/* Human Outcome / Stats */}
         <section className="py-24 px-8 border-y border-white/5 bg-white/[0.01]">
           <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
             {[
-              { label: "Analyses Generated", value: "142,000+" },
-              { label: "Confusion Reduction", value: "84%" },
+              { label: "Decisions Clarified", value: "142,000+" },
+              { label: "Anxiety Reduction", value: "84%" },
               { label: "Active Strategists", value: "12,400" },
-              { label: "Logic Nodes", value: "2.4M" },
+              { label: "Hours of Overthinking Saved", value: "2M+" },
             ].map((stat, i) => (
               <div key={i} className="space-y-2">
                 <div className="text-3xl md:text-5xl font-light tracking-tighter">{stat.value}</div>
@@ -194,22 +194,22 @@ export default function Landing() {
           </div>
         </section>
 
-        {/* Actionable Vectors */}
+        {/* Decision Hubs */}
         <section className="py-32 px-8 max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
             <div className="space-y-4">
-              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/20">Operational Domains</span>
-              <h2 className="text-5xl font-medium tracking-tighter">Accelerate Your Vectors.</h2>
+              <span className="text-[10px] font-bold uppercase tracking-[0.4em] text-white/20">Operational Focus</span>
+              <h2 className="text-5xl font-medium tracking-tighter">Navigate high-stakes choices.</h2>
             </div>
-            <p className="text-white/40 max-w-md text-lg font-light">Structure any decision across high-stakes domains with specialized analysis hubs.</p>
+            <p className="text-white/40 max-w-md text-lg font-light">Bring structure to the most complex areas of your life with specialized thinking frameworks.</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
-              { title: "Career Shift", q: "Market inflection points", icon: Code, color: "hover:border-blue-500/50" },
-              { title: "Ventures", q: "Asymmetric upside", icon: Rocket, color: "hover:border-purple-500/50" },
-              { title: "Capital", q: "Risk-adjusted returns", icon: Globe, color: "hover:border-green-500/50" },
-              { title: "Strategy", q: "Strategic dominance", icon: Zap, color: "hover:border-yellow-500/50" }
+              { title: "Career Shift", q: "Is the timing right for a change?", icon: Code, color: "hover:border-blue-500/50" },
+              { title: "Ventures", q: "Am I calculating the real risk?", icon: Rocket, color: "hover:border-purple-500/50" },
+              { title: "Capital", q: "Where is the asymmetric upside?", icon: Globe, color: "hover:border-green-500/50" },
+              { title: "Life Strategy", q: "Does this align with my long-term vision?", icon: Zap, color: "hover:border-yellow-500/50" }
             ].map((card, i) => (
               <motion.div
                 key={i}
@@ -228,7 +228,7 @@ export default function Landing() {
                     {card.q}
                   </p>
                   <div className="pt-4 flex items-center gap-2 text-white/0 group-hover:text-white/40 transition-all duration-500">
-                    <span className="text-[10px] uppercase font-bold tracking-widest">Execute Node</span>
+                    <span className="text-[10px] uppercase font-bold tracking-widest">Explore Framework</span>
                     <ChevronRight size={14} />
                   </div>
                 </div>

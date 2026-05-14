@@ -92,7 +92,7 @@ export function AIDemo() {
   // Flatten scenarios into individual steps
   const demoSteps = scenarios.flatMap(s => [
     { type: "user", text: s.question, icon: MessageSquare },
-    { type: "ai-header", text: "Processing Strategic Vectors...", icon: Brain },
+    { type: "ai-header", text: "Finding Clarity...", icon: Brain },
     ...s.results.map(r => ({ ...r, type: "result" }))
   ]);
 
@@ -162,14 +162,14 @@ export function AIDemo() {
                 </div>
                 <div>
                   <h4 className="text-lg font-medium tracking-tight">{currentStep.title}</h4>
-                  <p className="text-[10px] text-white/20 uppercase tracking-widest">Decision Vector Index: 0.94</p>
+                  <p className="text-[10px] text-white/20 uppercase tracking-widest">Clarity Score: 0.94</p>
                 </div>
               </div>
               <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/5 leading-relaxed text-white/60 font-light">
                 {currentStep.content}
               </div>
               <div className="flex items-center gap-2 text-[10px] text-white/20 font-bold uppercase tracking-widest">
-                <span>Next logic node</span>
+                <span>View deep analysis</span>
                 <ChevronRight size={12} />
               </div>
             </div>

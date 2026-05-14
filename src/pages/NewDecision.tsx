@@ -28,6 +28,14 @@ export default function NewDecision({ user }: { user: User }) {
     importance: 5,
   });
 
+  React.useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const title = params.get("title");
+    if (title) {
+      setFormData(prev => ({ ...prev, title }));
+    }
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);

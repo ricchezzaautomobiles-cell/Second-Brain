@@ -15,6 +15,13 @@ export default function Dashboard({ user }: { user: User }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const q = params.get("q");
+    if (q) {
+      window.location.href = `/new-decision?title=${encodeURIComponent(q)}`;
+      return;
+    }
+
     async function fetchDecisions() {
       if (!supabase) {
         setLoading(false);
