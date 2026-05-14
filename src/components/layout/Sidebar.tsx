@@ -20,7 +20,7 @@ export function Sidebar() {
         <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center">
           <Brain className="text-black" size={24} />
         </div>
-        <span className="font-semibold text-lg tracking-tight">Second Brain</span>
+        <span className="font-semibold text-lg tracking-tight">Beyond</span>
       </div>
 
       <nav className="flex-1 space-y-2">

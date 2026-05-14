@@ -18,7 +18,7 @@ export default function Landing() {
       <nav className="relative z-10 flex items-center justify-between px-8 py-6 max-w-7xl mx-auto">
         <div className="flex items-center gap-2">
           <Brain className="text-white" size={32} />
-          <span className="text-xl font-semibold tracking-tighter">Second Brain</span>
+          <span className="text-xl font-semibold tracking-tighter">Beyond</span>
         </div>
         <div className="flex items-center gap-8">
           <Link to="/auth" className="text-sm font-medium text-white/60 hover:text-white transition-colors">Login</Link>
@@ -116,9 +116,9 @@ export default function Landing() {
       <footer className="relative z-10 border-t border-white/5 py-20 px-8 max-w-7xl mx-auto text-center">
         <div className="flex items-center justify-center gap-2 mb-8">
           <Brain className="text-white/20" size={24} />
-          <span className="text-sm font-medium text-white/20 tracking-tighter">Second Brain</span>
+          <span className="text-sm font-medium text-white/20 tracking-tighter">Beyond</span>
         </div>
-        <p className="text-xs text-white/20 uppercase tracking-[0.2em]">Designed for the ambitious. Powered by Intelligence.</p>
+        <p className="text-xs text-white/20 uppercase tracking-[0.2em]">Designed for the ambitious. Powered by OpenMinded Intelligence.</p>
       </footer>
     </div>
   );
