@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
 import { motion } from "motion/react";
-import { Brain, Sparkles, TrendingUp, Target, Clock, MessageSquare, ChevronRight, Zap } from "lucide-react";
+import { Brain, Sparkles, TrendingUp, Target, Clock, MessageSquare, ChevronRight, Zap, Crown, AlertTriangle } from "lucide-react";
 import { Card, Button } from "../components/ui/Base";
 import { supabase } from "../lib/supabase";
 import { Decision } from "../types";
 import { formatDate } from "../lib/utils";
 import { Link } from "react-router-dom";
+import { usePlanUsage } from "../hooks/usePlanUsage";
 
 export default function Dashboard({ user }: { user: User }) {
+  const { plan, decisionsToday, limit, remaining, isOverLimit } = usePlanUsage(user);
   const [decisions, setDecisions] = useState<Decision[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -120,6 +122,43 @@ export default function Dashboard({ user }: { user: User }) {
 
         {/* Sidebar Widget */}
         <div className="space-y-8">
+          <Card className={`p-8 border-2 ${isOverLimit ? 'border-red-500/50 bg-red-500/5' : 'border-white/5 bg-white/[0.02]'}`}>
+            <div className="flex items-center justify-between mb-6">
+              <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${isOverLimit ? 'bg-red-500/20 text-red-500' : 'bg-white/10 text-white/40'}`}>
+                {plan === 'free' ? <Zap size={20} /> : <Crown size={20} />}
+              </div>
+              <span className="text-[10px] uppercase tracking-[0.2em] font-bold text-white/20">{plan} tier</span>
+            </div>
+            <h3 className="text-lg font-medium mb-1">Plan Limit Status</h3>
+            <div className="flex items-baseline gap-1 mb-4">
+              <span className="text-3xl font-light">{decisionsToday}</span>
+              <span className="text-white/20 text-sm">/ {limit} today</span>
+            </div>
+            
+            <div className="w-full bg-white/5 h-1 rounded-full overflow-hidden mb-6">
+              <motion.div 
+                initial={{ width: 0 }}
+                animate={{ width: `${(decisionsToday / limit) * 100}%` }}
+                className={`h-full ${isOverLimit ? 'bg-red-500' : 'bg-white/40'}`} 
+              />
+            </div>
+
+            {isOverLimit ? (
+              <div className="space-y-4">
+                <p className="text-xs text-white/40 leading-relaxed italic">
+                  Critical: Daily analysis limit reached. System requires upgrade to process further inputs.
+                </p>
+                <Link to="/settings" className="block">
+                  <Button variant="primary" size="sm" className="w-full">Upgrade Now</Button>
+                </Link>
+              </div>
+            ) : (
+              <p className="text-[10px] text-white/20 uppercase tracking-widest text-center">
+                {remaining} analyses remaining today
+              </p>
+            )}
+          </Card>
+
           <Card className="p-8 bg-gradient-to-br from-blue-500/10 to-transparent">
             <div className="w-10 h-10 rounded-xl bg-blue-500/20 flex items-center justify-center mb-6 text-blue-400">
               <Sparkles size={24} />

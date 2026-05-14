@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Brain, ArrowRight, Loader2, Target, Shield, Clock, Heart, Sparkles, ChevronRight, Check, Zap } from "lucide-react";
+import { Brain, ArrowRight, Loader2, Target, Shield, Clock, Heart, Sparkles, ChevronRight, Check, Zap, AlertTriangle, Crown } from "lucide-react";
 import { User } from "@supabase/supabase-js";
 import { Button, Card } from "../components/ui/Base";
 import { GlassPanel } from "../components/ui/Visuals";
@@ -8,8 +8,12 @@ import { analyzeDecision } from "../services/aiService";
 import { supabase } from "../lib/supabase";
 import { DecisionAnalysis } from "../types";
 import confetti from "canvas-confetti";
+import { Typewriter } from "../components/ui/Typewriter";
+import { usePlanUsage } from "../hooks/usePlanUsage";
+import { Link } from "react-router-dom";
 
 export default function NewDecision({ user }: { user: User }) {
+  const { isOverLimit, remaining, limit, plan, loading: usageLoading } = usePlanUsage(user);
   const [loading, setLoading] = useState(false);
   const [analysis, setAnalysis] = useState<DecisionAnalysis | null>(null);
   
@@ -131,9 +135,52 @@ export default function NewDecision({ user }: { user: User }) {
 
   return (
     <div className="max-w-3xl mx-auto py-10">
-      <div className="mb-12">
-        <h1 className="text-4xl font-medium tracking-tight mb-4">Structure Your Thought.</h1>
-        <p className="text-white/40 font-light">Fill out the variables below for a comprehensive AI strategic analysis.</p>
+      <div className="mb-12 space-y-6">
+        <div>
+          <h1 className="text-4xl font-medium tracking-tight mb-4">Structure Your Thought.</h1>
+          <p className="text-white/40 font-light">Fill out the variables below for a comprehensive AI strategic analysis.</p>
+        </div>
+
+        {isOverLimit && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="p-6 rounded-3xl glass-morphism border-red-500/20 flex flex-col md:flex-row items-center gap-6"
+          >
+            <div className="w-14 h-14 rounded-2xl bg-red-500/10 flex items-center justify-center shrink-0">
+              <AlertTriangle className="text-red-500 w-7 h-7" />
+            </div>
+            <div className="flex-1 text-center md:text-left">
+              <h4 className="text-white font-medium text-lg">Daily Limit Reached</h4>
+              <p className="text-white/40 text-sm">You've used all {limit} decisions for today. Upgrade to keep thinking clearly.</p>
+            </div>
+            <Link to="/settings" className="w-full md:w-auto">
+              <Button variant="primary" size="md" className="w-full">
+                <Crown size={16} />
+                Upgrade Plan
+              </Button>
+            </Link>
+          </motion.div>
+        )}
+
+        {!isOverLimit && !usageLoading && (
+          <div className="flex items-center justify-between p-4 rounded-2xl bg-white/5 border border-white/10">
+            <div className="flex items-center gap-3">
+              <Zap size={16} className="text-white/40" />
+              <span className="text-sm font-medium text-white/40 lowercase tracking-tight">Daily usage status</span>
+            </div>
+            <div className="flex items-center gap-4">
+              <span className="text-sm font-medium text-white/80">{limit - remaining} / {limit} used</span>
+              <div className="w-24 h-1.5 bg-white/5 rounded-full overflow-hidden">
+                <motion.div 
+                  initial={{ width: 0 }}
+                  animate={{ width: `${((limit - remaining) / limit) * 100}%` }}
+                  className="h-full bg-white/20" 
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-12">
@@ -251,17 +298,22 @@ export default function NewDecision({ user }: { user: User }) {
           </div>
         </section>
 
-        <div className="pt-10 flex border-t border-white/5">
+        <div className="pt-10 flex flex-col gap-4 border-t border-white/5">
           <Button 
             type="submit" 
             size="lg" 
             className="w-full md:w-auto min-w-[240px] py-5 h-auto text-lg tracking-normal group"
-            disabled={loading}
+            disabled={loading || isOverLimit || usageLoading}
           >
             {loading ? (
               <>
                 <Loader2 className="animate-spin" size={20} />
                 Analyzing with AI...
+              </>
+            ) : isOverLimit ? (
+              <>
+                <AlertTriangle size={20} />
+                Limit Reached
               </>
             ) : (
               <>
@@ -270,6 +322,11 @@ export default function NewDecision({ user }: { user: User }) {
               </>
             )}
           </Button>
+          {isOverLimit && (
+            <p className="text-xs text-center md:text-left text-white/20 px-2 italic">
+              Your limits will reset in approximately {24 - new Date().getHours()} hours.
+            </p>
+          )}
         </div>
       </form>
     </div>

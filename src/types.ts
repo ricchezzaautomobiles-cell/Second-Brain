@@ -26,10 +26,13 @@ export interface Decision {
   created_at: string;
 }
 
+export type PlanTier = "free" | "starter" | "pro";
+
 export interface UserProfile {
   id: string;
   email: string;
   full_name: string | null;
   avatar_url: string | null;
+  plan: PlanTier;
   updated_at: string;
 }
