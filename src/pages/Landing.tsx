@@ -5,6 +5,8 @@ import { Button } from "../components/ui/Base";
 import { GlowingOrb } from "../components/ui/Visuals";
 import { Link } from "react-router-dom";
 
+import { Typewriter } from "../components/ui/Typewriter";
+
 export default function Landing() {
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#050505]">
@@ -31,25 +33,30 @@ export default function Landing() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
         >
           <span className="inline-block px-4 py-1.5 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-white/60 mb-8 uppercase tracking-widest animate-pulse">
             Introducing Version 2.0
           </span>
           <h1 className="text-7xl md:text-9xl font-medium tracking-tight mb-8 text-gradient">
-            Think Clearly.
+            <Typewriter text="Think Clearly." speed={100} />
           </h1>
           <p className="text-xl md:text-2xl text-white/40 max-w-2xl mx-auto mb-12 font-light leading-relaxed">
-            An AI-powered decision intelligence system for ambitious people who want to optimize their life and career.
+            <Typewriter text="An AI-powered decision intelligence system for ambitious people who want to optimize their life and career." speed={30} delay={1500} />
           </p>
-          <div className="flex items-center justify-center gap-6">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 4, duration: 1 }}
+            className="flex items-center justify-center gap-6"
+          >
             <Link to="/auth">
               <Button size="lg" className="group">
                 Start Thinking Better
                 <ArrowRight className="group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
-          </div>
+          </motion.div>
         </motion.div>
 
         {/* Hero Visual */}

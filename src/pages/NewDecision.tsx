@@ -56,10 +56,11 @@ export default function NewDecision({ user }: { user: User }) {
     }
   };
 
-  const AnalysisSection = ({ title, content, icon: Icon }: { title: string, content: string, icon: any }) => (
+  const AnalysisSection = ({ title, content, icon: Icon, delay = 0 }: { title: string, content: string, icon: any, delay?: number }) => (
     <motion.div
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: delay / 1000 }}
       className="space-y-4"
     >
       <div className="flex items-center gap-3">
@@ -68,9 +69,9 @@ export default function NewDecision({ user }: { user: User }) {
         </div>
         <h3 className="text-lg font-medium">{title}</h3>
       </div>
-      <p className="text-white/60 font-light leading-relaxed text-sm md:text-base bg-white/[0.02] p-6 rounded-2xl border border-white/5">
-        {content}
-      </p>
+      <div className="text-white/60 font-light leading-relaxed text-sm md:text-base glass-morphism p-6 rounded-3xl border border-white/5 animate-in">
+        <Typewriter text={content} speed={10} delay={delay} />
+      </div>
     </motion.div>
   );
 
@@ -78,10 +79,13 @@ export default function NewDecision({ user }: { user: User }) {
     return (
       <div className="max-w-4xl mx-auto space-y-12 py-10">
         <div className="flex items-center justify-between">
-          <div>
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
             <h1 className="text-4xl font-medium tracking-tight mb-2">Strategy Map</h1>
             <p className="text-white/40 font-light">Comprehensive analysis for: <span className="text-white/80">{formData.title}</span></p>
-          </div>
+          </motion.div>
           <Button variant="secondary" onClick={() => setAnalysis(null)}>
             New Analysis
           </Button>
@@ -89,37 +93,37 @@ export default function NewDecision({ user }: { user: User }) {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="p-8 flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-blue-500/10 to-transparent">
-            <span className="text-xs uppercase tracking-[0.2em] text-white/40">Clarity Score</span>
+            <span className="text-xs uppercase tracking-[0.2em] text-white/40 font-bold">Clarity Score</span>
             <span className="text-7xl font-light">{analysis.clarityScore}%</span>
             <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
               <motion.div 
                 initial={{ width: 0 }}
                 animate={{ width: `${analysis.clarityScore}%` }}
-                className="h-full bg-blue-500" 
+                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+                className="h-full bg-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.5)]" 
               />
             </div>
           </Card>
           <Card className="p-8 flex flex-col items-center justify-center gap-4 bg-gradient-to-br from-purple-500/10 to-transparent">
-            <span className="text-xs uppercase tracking-[0.2em] text-white/40">Confidence Level</span>
+            <span className="text-xs uppercase tracking-[0.2em] text-white/40 font-bold">Confidence Level</span>
             <span className="text-7xl font-light">{analysis.confidenceLevel}%</span>
             <div className="w-full bg-white/5 h-1.5 rounded-full overflow-hidden">
               <motion.div 
                 initial={{ width: 0 }} 
                 animate={{ width: `${analysis.confidenceLevel}%` }}
-                className="h-full bg-purple-500" 
+                transition={{ duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+                className="h-full bg-purple-500 shadow-[0_0_15px_rgba(139,92,246,0.5)]" 
               />
             </div>
           </Card>
         </div>
 
         <div className="grid grid-cols-1 gap-12 pt-8">
-          <AnalysisSection title="Strategic Analysis" content={analysis.strategicAnalysis} icon={Brain} />
-          <AnalysisSection title="Core Tradeoffs" content={analysis.coreTradeoffs} icon={Heart} />
-          <AnalysisSection title="Risk Analysis" content={analysis.riskAnalysis} icon={Shield} />
-          <AnalysisSection title="Opportunity Cost" content={analysis.opportunityCost} icon={Target} />
-          <AnalysisSection title="Recommended Path" content={analysis.recommendedPath} icon={Zap} />
-          <AnalysisSection title="Next Best Actions" content={analysis.nextBestActions} icon={ChevronRight} />
-          <AnalysisSection title="Long-Term Outlook" content={analysis.longTermOutlook} icon={Sparkles} />
+          <AnalysisSection title="Strategic Analysis" content={analysis.strategicAnalysis} icon={Brain} delay={100} />
+          <AnalysisSection title="Core Tradeoffs" content={analysis.coreTradeoffs} icon={Heart} delay={500} />
+          <AnalysisSection title="Risk Analysis" content={analysis.riskAnalysis} icon={Shield} delay={1000} />
+          <AnalysisSection title="Opportunity Cost" content={analysis.opportunityCost} icon={Target} delay={1500} />
+          <AnalysisSection title="Recommended Path" content={analysis.recommendedPath} icon={Zap} delay={2000} />
         </div>
       </div>
     );

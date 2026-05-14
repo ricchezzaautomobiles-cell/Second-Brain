@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { motion } from "motion/react";
 import { supabase } from "./lib/supabase";
 import { AppLayout } from "./components/layout/AppLayout";
 import Landing from "./pages/Landing";
@@ -40,8 +41,22 @@ export default function App() {
 
   if (loading) {
     return (
-      <div className="h-screen w-screen flex items-center justify-center bg-[#050505]">
-        <div className="w-12 h-12 border-2 border-white/20 border-t-white rounded-full animate-spin" />
+      <div className="h-screen w-screen flex flex-col items-center justify-center bg-[#050505] gap-8">
+        <div className="relative">
+          <div className="w-16 h-16 border-b-2 border-white rounded-full animate-spin" />
+          <div className="absolute inset-0 w-16 h-16 border-2 border-white/5 rounded-full" />
+        </div>
+        <div className="flex flex-col items-center gap-2">
+          <p className="text-xs uppercase tracking-[0.3em] font-medium text-white/40 animate-pulse">Initializing System</p>
+          <div className="w-32 h-[1px] bg-white/10 overflow-hidden rounded-full">
+            <motion.div 
+              initial={{ x: "-100%" }}
+              animate={{ x: "100%" }}
+              transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+              className="w-full h-full bg-white/60"
+            />
+          </div>
+        </div>
       </div>
     );
   }
