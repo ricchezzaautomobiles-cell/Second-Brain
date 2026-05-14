@@ -12,6 +12,12 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  body::before {
+    content: "";
+    @apply fixed inset-0 z-[100] pointer-events-none opacity-[0.03];
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3Ex%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+
   h1, h2, h3, h4, h5, h6 {
     @apply font-medium tracking-tight text-white;
   }
@@ -32,6 +38,26 @@
 
 .text-gradient {
   @apply bg-clip-text text-transparent bg-gradient-to-b from-white via-white to-white/30;
+}
+
+.btn-shine-effect {
+  @apply relative overflow-hidden;
+}
+
+.btn-shine-effect::after {
+  content: "";
+  @apply absolute top-0 -left-full w-full h-full;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transition: all 0.6s ease;
+}
+
+.btn-shine-effect:hover::after {
+  @apply left-full;
 }
 
 .shimmer {
