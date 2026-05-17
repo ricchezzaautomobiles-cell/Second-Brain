@@ -17,7 +17,7 @@ export function Sidebar() {
   return (
     <aside className="w-64 h-screen border-r border-[var(--glass-border)] flex flex-col p-6 sticky top-0 bg-[var(--bg-system)]">
       <div className="flex items-center gap-3 mb-12 px-2">
-        <div className="w-10 h-10 rounded-xl bg-[var(--text-main)] flex items-center justify-center text-[var(--bg-system)]">
+        <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center text-black shadow-sm ring-1 ring-black/5">
           <Brain size={24} />
         </div>
         <span className="font-semibold text-lg tracking-tight">Beyond</span>
