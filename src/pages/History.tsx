@@ -2,9 +2,11 @@ import React, { useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
 import { Search, ChevronDown, ChevronRight, Calendar, Brain } from "lucide-react";
 import { Card } from "../components/ui/Base";
-import { supabase } from "../lib/supabase";
+import { isSupabaseConfigured, supabase } from "../lib/supabase";
 import { Decision } from "../types";
 import { formatDate } from "../lib/utils";
+import { storage } from "../lib/storage";
+import { Link } from "react-router-dom";
 
 export default function History({ user }: { user: User }) {
   const [decisions, setDecisions] = useState<Decision[]>([]);
@@ -13,6 +15,17 @@ export default function History({ user }: { user: User }) {
 
   useEffect(() => {
     async function fetchHistory() {
+      if (user.id === "guest") {
+        setDecisions(storage.getDecisions());
+        setLoading(false);
+        return;
+      }
+
+      if (!isSupabaseConfigured || !supabase) {
+        setLoading(false);
+        return;
+      }
+
       const { data, error } = await supabase
         .from("decisions")
         .select("*")
@@ -52,30 +65,32 @@ export default function History({ user }: { user: User }) {
           ))
         ) : filteredDecisions.length > 0 ? (
           filteredDecisions.map((decision) => (
-            <Card key={decision.id} isHoverable className="p-6">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-6">
-                  <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-white/40">
-                    <Brain size={24} />
-                  </div>
-                  <div className="space-y-1">
-                    <h3 className="text-lg font-medium tracking-tight">{decision.title}</h3>
-                    <div className="flex items-center gap-3 text-xs text-white/40 uppercase tracking-widest font-medium">
-                      <span className="flex items-center gap-1"><Calendar size={12} /> {formatDate(decision.created_at)}</span>
-                      <span>•</span>
-                      <span>Importance: {decision.importance}/10</span>
+            <Link key={decision.id} to={`/decision/${decision.id}`}>
+              <Card isHoverable className="p-6">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-6">
+                    <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-white/40">
+                      <Brain size={24} />
+                    </div>
+                    <div className="space-y-1">
+                      <h3 className="text-lg font-medium tracking-tight">{decision.title}</h3>
+                      <div className="flex items-center gap-3 text-xs text-white/40 uppercase tracking-widest font-medium">
+                        <span className="flex items-center gap-1"><Calendar size={12} /> {formatDate(decision.created_at)}</span>
+                        <span>•</span>
+                        <span>Importance: {decision.importance}/10</span>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div className="flex items-center gap-8">
-                  <div className="text-right">
-                    <div className="text-2xl font-light">{decision.analysis?.clarityScore || 0}%</div>
-                    <div className="text-[10px] uppercase tracking-widest text-white/20">Clarity</div>
+                  <div className="flex items-center gap-8">
+                    <div className="text-right">
+                      <div className="text-2xl font-light">{decision.analysis?.clarityScore || 0}%</div>
+                      <div className="text-[10px] uppercase tracking-widest text-white/20">Clarity</div>
+                    </div>
+                    <ChevronRight size={20} className="text-white/20" />
                   </div>
-                  <ChevronRight size={20} className="text-white/20" />
                 </div>
-              </div>
-            </Card>
+              </Card>
+            </Link>
           ))
         ) : (
           <div className="py-20 text-center text-white/20 uppercase tracking-[0.2em] text-sm">

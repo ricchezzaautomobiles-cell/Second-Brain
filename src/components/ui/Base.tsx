@@ -10,9 +10,9 @@ export function Card({ children, className, isGlass = true, isHoverable = false,
   return (
     <div
       className={cn(
-        "relative rounded-[2rem] overflow-hidden border border-white/10 transition-all duration-500",
+        "relative rounded-[2rem] overflow-hidden border border-[var(--glass-border)] transition-all duration-500",
         isGlass && "glass-morphism",
-        isHoverable && "hover:bg-white/[0.04] hover:border-white/20 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)]",
+        isHoverable && "hover:bg-[var(--bg-accent)] hover:border-[var(--glass-border)] hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(0,0,0,0.1)]",
         className
       )}
       {...props}
@@ -35,9 +35,9 @@ export function Button({
   ...props 
 }: ButtonProps) {
   const variants = {
-    primary: "bg-white text-black hover:bg-white/90 shadow-[0_4px_24px_rgba(255,255,255,0.15)] active:scale-[0.98] btn-shine-effect",
-    secondary: "bg-white/5 text-white hover:bg-white/10 border border-white/10 active:scale-[0.98] btn-shine-effect",
-    ghost: "bg-transparent text-white/50 hover:text-white hover:bg-white/5 active:scale-[0.98]",
+    primary: "bg-[var(--text-main)] text-[var(--bg-system)] hover:opacity-90 shadow-[0_4px_24px_rgba(0,0,0,0.1)] active:scale-[0.98] btn-shine-effect",
+    secondary: "bg-[var(--glass-layer)] text-[var(--text-main)] hover:bg-[var(--bg-accent)] border border-[var(--glass-border)] active:scale-[0.98] btn-shine-effect",
+    ghost: "bg-transparent text-[var(--text-muted)] hover:text-[var(--text-main)] hover:bg-[var(--glass-layer)] active:scale-[0.98]",
     danger: "bg-red-500/10 text-red-500 hover:bg-red-500/20 border border-red-500/20 active:scale-[0.98]",
   };
 

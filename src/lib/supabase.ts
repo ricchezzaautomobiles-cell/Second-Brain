@@ -17,7 +17,8 @@ function cleanUrl(url: string) {
 
 // Only create the client if we have valid-looking credentials
 const cleanedUrl = cleanUrl(supabaseUrl);
-export const supabase = (cleanedUrl && supabaseAnonKey && cleanedUrl.startsWith("http")) 
+export const isSupabaseConfigured = !!(cleanedUrl && supabaseAnonKey && cleanedUrl.startsWith("http"));
+export const supabase = isSupabaseConfigured 
   ? createClient(cleanedUrl, supabaseAnonKey)
   : null;
 

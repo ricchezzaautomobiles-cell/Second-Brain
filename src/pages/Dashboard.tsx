@@ -8,6 +8,7 @@ import { Decision } from "../types";
 import { formatDate } from "../lib/utils";
 import { Link } from "react-router-dom";
 import { usePlanUsage } from "../hooks/usePlanUsage";
+import { storage } from "../lib/storage";
 
 export default function Dashboard({ user }: { user: User }) {
   const { plan, decisionsToday, limit, remaining, isOverLimit } = usePlanUsage(user);
@@ -23,6 +24,12 @@ export default function Dashboard({ user }: { user: User }) {
     }
 
     async function fetchDecisions() {
+      if (user.id === "guest") {
+        setDecisions(storage.getDecisions().slice(0, 3));
+        setLoading(false);
+        return;
+      }
+
       if (!supabase) {
         setLoading(false);
         return;
@@ -92,7 +99,7 @@ export default function Dashboard({ user }: { user: User }) {
               ))
             ) : decisions.length > 0 ? (
               decisions.map((decision) => (
-                <Link key={decision.id} to={`/history`}>
+                <Link key={decision.id} to={`/decision/${decision.id}`}>
                   <Card isHoverable className="p-6 mb-4">
                     <div className="flex items-start justify-between">
                       <div className="space-y-2">

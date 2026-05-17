@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { motion } from "motion/react";
 import { Brain, Lock, Mail, Loader2, ArrowRight } from "lucide-react";
-import { supabase } from "../lib/supabase";
+import { supabase, isSupabaseConfigured } from "../lib/supabase";
 import { Button } from "../components/ui/Base";
 import { GlowingOrb, GlassPanel } from "../components/ui/Visuals";
+import { AlertCircle } from "lucide-react";
 
 export default function Auth() {
   const [isLogin, setIsLogin] = useState(true);
@@ -11,6 +12,11 @@ export default function Auth() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const enterPreviewMode = () => {
+    localStorage.setItem("beyond_preview_mode", "true");
+    window.location.reload();
+  };
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -66,6 +72,31 @@ export default function Auth() {
         </div>
 
         <GlassPanel className="p-8 shadow-2xl">
+          {!isSupabaseConfigured && (
+            <div className="mb-8 p-4 rounded-xl bg-blue-500/10 border border-blue-500/20 space-y-4">
+              <div className="flex items-center gap-2 text-blue-400">
+                <AlertCircle size={18} />
+                <span className="text-xs font-bold uppercase tracking-widest">Configuration Notice</span>
+              </div>
+              <p className="text-xs text-white/60 leading-relaxed">
+                Supabase is not configured yet. You can still explore Beyond in <strong>Preview Mode</strong> which saves data locally to your browser.
+              </p>
+              <Button 
+                variant="secondary" 
+                size="sm" 
+                className="w-full bg-blue-500/10 hover:bg-blue-500/20 border-blue-500/20 text-blue-400"
+                onClick={enterPreviewMode}
+              >
+                Enter Preview Mode
+              </Button>
+              <div className="pt-2 border-t border-white/5">
+                <p className="text-[10px] text-white/30 italic">
+                  To enable permanent cross-device storage, add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to the Secrets panel in AI Studio.
+                </p>
+              </div>
+            </div>
+          )}
+
           <form onSubmit={handleAuth} className="space-y-6">
             <div className="space-y-2">
               <label className="text-xs font-medium text-white/40 uppercase tracking-widest px-1">Email Address</label>

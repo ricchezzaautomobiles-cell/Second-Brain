@@ -2,5 +2,5 @@
   "name": "Beyond",
   "description": "An elite AI-powered decision intelligence system for strategic life and career optimization.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

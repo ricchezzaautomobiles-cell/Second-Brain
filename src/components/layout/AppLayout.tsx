@@ -16,7 +16,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5, ease: "easeInOut" }}
-          className="min-h-screen bg-[#050505]"
+          className="min-h-screen bg-[var(--bg-system)]"
         >
           {children}
         </motion.main>
@@ -25,7 +25,7 @@ export function AppLayout({ children }: { children: ReactNode }) {
   }
 
   return (
-    <div className="flex min-h-screen bg-[#050505]">
+    <div className="flex min-h-screen bg-[var(--bg-system)]">
       <Sidebar />
       <AnimatePresence mode="wait">
         <motion.main 

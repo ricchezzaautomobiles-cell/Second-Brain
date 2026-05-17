@@ -2,7 +2,7 @@ import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import { OpenAI } from "openai";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { GoogleGenAI, Type } from "@google/genai";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -14,7 +14,7 @@ app.use(express.json());
 
 // Lazy-loaded AI clients
 let openai: OpenAI | null = null;
-let genAI: GoogleGenerativeAI | null = null;
+let genAI: GoogleGenAI | null = null;
 
 function getOpenAI() {
   if (!openai && process.env.OPENAI_API_KEY) {
@@ -25,7 +25,14 @@ function getOpenAI() {
 
 function getGemini() {
   if (!genAI && process.env.GEMINI_API_KEY) {
-    genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    genAI = new GoogleGenAI({
+      apiKey: process.env.GEMINI_API_KEY,
+      httpOptions: {
+        headers: {
+          'User-Agent': 'aistudio-build',
+        }
+      }
+    });
   }
   return genAI;
 }
@@ -84,9 +91,58 @@ Importance (1-10): ${importance}`;
 
     console.log("Analyzing decision:", title);
     let result;
-    const ai = getOpenAI();
+    const gemini = getGemini();
 
-    if (ai) {
+    if (gemini) {
+      console.log("Using Gemini primary engine...");
+      const response = await gemini.models.generateContent({
+        model: "gemini-3-flash-preview",
+        contents: `${systemPrompt}\n\n${userPrompt}`,
+        config: {
+          responseMimeType: "application/json",
+          responseSchema: {
+            type: Type.OBJECT,
+            properties: {
+              strategicAnalysis: { type: Type.STRING },
+              coreTradeoffs: { type: Type.STRING },
+              riskAnalysis: { type: Type.STRING },
+              opportunityCost: { type: Type.STRING },
+              emotionalBiasDetection: { type: Type.STRING },
+              recommendedPath: { type: Type.STRING },
+              nextBestActions: { type: Type.STRING },
+              longTermOutlook: { type: Type.STRING },
+              clarityScore: { type: Type.NUMBER },
+              confidenceLevel: { type: Type.NUMBER },
+            },
+            required: [
+              "strategicAnalysis", 
+              "coreTradeoffs", 
+              "riskAnalysis", 
+              "opportunityCost", 
+              "emotionalBiasDetection", 
+              "recommendedPath", 
+              "nextBestActions", 
+              "longTermOutlook", 
+              "clarityScore", 
+              "confidenceLevel"
+            ]
+          }
+        }
+      });
+      
+      try {
+        result = JSON.parse(response.text || "{}");
+      } catch (e) {
+        console.error("Gemini Parse Error:", e);
+        result = { error: "Failed to parse AI response." };
+      }
+    } else {
+      console.log("Gemini not configured, falling back to OpenAI...");
+      const ai = getOpenAI();
+      if (!ai) {
+        return res.status(500).json({ error: "AI services not configured. Please set GEMINI_API_KEY (recommended) or OPENAI_API_KEY." });
+      }
+      
       const response = await ai.chat.completions.create({
         model: "gpt-4o",
         messages: [
@@ -96,28 +152,6 @@ Importance (1-10): ${importance}`;
         response_format: { type: "json_object" }
       });
       result = JSON.parse(response.choices[0].message.content || "{}");
-    } else {
-      console.log("Using Gemini fallback...");
-      const gemini = getGemini();
-      if (!gemini) {
-        return res.status(500).json({ error: "AI services not configured. Please set OPENAI_API_KEY or GEMINI_API_KEY." });
-      }
-      const model = gemini.getGenerativeModel({ model: "gemini-1.5-flash" });
-      const prompt = `${systemPrompt}\n\n${userPrompt}\n\nIMPORTANT: You must return ONLY valid JSON.`;
-      const response = await model.generateContent(prompt);
-      const text = response.response.text();
-      
-      try {
-        const jsonMatch = text.match(/\{[\s\S]*\}/);
-        if (jsonMatch) {
-          result = JSON.parse(jsonMatch[0]);
-        } else {
-          throw new Error("No JSON found in response");
-        }
-      } catch (e) {
-        console.error("Gemini Parse Error:", e, text);
-        result = { error: "Failed to parse AI response. Raw response logged." };
-      }
     }
     console.log("Analysis complete.");
     res.json(result);

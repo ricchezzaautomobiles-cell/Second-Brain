@@ -5,18 +5,19 @@ import { User } from "@supabase/supabase-js";
 import { Button, Card } from "../components/ui/Base";
 import { GlassPanel } from "../components/ui/Visuals";
 import { analyzeDecision } from "../services/aiService";
-import { supabase } from "../lib/supabase";
+import { isSupabaseConfigured, supabase } from "../lib/supabase";
 import { DecisionAnalysis } from "../types";
 import confetti from "canvas-confetti";
 import { Typewriter } from "../components/ui/Typewriter";
 import { usePlanUsage } from "../hooks/usePlanUsage";
 import { Link } from "react-router-dom";
+import { storage } from "../lib/storage";
 
 export default function NewDecision({ user }: { user: User }) {
   const { isOverLimit, remaining, limit, plan, loading: usageLoading } = usePlanUsage(user);
   const [loading, setLoading] = useState(false);
   const [analysis, setAnalysis] = useState<DecisionAnalysis | null>(null);
-  
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -44,14 +45,18 @@ export default function NewDecision({ user }: { user: User }) {
       const result = await analyzeDecision(formData);
       setAnalysis(result);
       
-      // Store in Supabase if configured
-      if (supabase) {
-        const { error } = await supabase.from("decisions").insert([{
-          user_id: user.id,
-          ...formData,
-          analysis: result,
-        }]);
-        
+      const decisionData = {
+        id: crypto.randomUUID(),
+        user_id: user.id,
+        created_at: new Date().toISOString(),
+        ...formData,
+        analysis: result,
+      };
+
+      if (user.id === "guest") {
+        storage.saveDecision(decisionData as any);
+      } else if (isSupabaseConfigured && supabase) {
+        const { error } = await supabase.from("decisions").insert([decisionData]);
         if (error) console.error("Database save error:", error);
       }
       

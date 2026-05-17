@@ -10,13 +10,35 @@ import NewDecision from "./pages/NewDecision";
 import History from "./pages/History";
 import Insights from "./pages/Insights";
 import Settings from "./pages/Settings";
+import DecisionDetails from "./pages/DecisionDetails";
 import { User } from "@supabase/supabase-js";
+import { isSupabaseConfigured } from "./lib/supabase";
 
 export default function App() {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [isPreviewMode, setIsPreviewMode] = useState(false);
 
   useEffect(() => {
+    const theme = localStorage.getItem("beyond_theme") || "dark";
+    document.documentElement.setAttribute("data-theme", theme);
+  }, []);
+
+  useEffect(() => {
+    // Check local storage for preview mode
+    const storedPreview = localStorage.getItem("beyond_preview_mode");
+    if (!isSupabaseConfigured || storedPreview === "true") {
+      if (storedPreview === "true") {
+        setIsPreviewMode(true);
+        setUser({ id: "guest", email: "guest@beyond.ai" } as any);
+      }
+      
+      if (!isSupabaseConfigured) {
+        setLoading(false);
+        return;
+      }
+    }
+
     if (!supabase) {
       setLoading(false);
       return;
@@ -87,6 +109,10 @@ export default function App() {
           <Route 
             path="/settings" 
             element={user ? <Settings user={user} /> : <Navigate to="/auth" />} 
+          />
+          <Route 
+            path="/decision/:id" 
+            element={user ? <DecisionDetails user={user} /> : <Navigate to="/auth" />} 
           />
         </Routes>
       </AppLayout>
