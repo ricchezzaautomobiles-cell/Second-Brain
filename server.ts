@@ -165,6 +165,33 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
+// Explicit routes for SEO sitemap, robots.txt, and Search Console verification
+app.get("/sitemap.xml", (req, res) => {
+  res.header("Content-Type", "application/xml");
+  res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://beyond.openminded.vercel.app/</loc>
+    <lastmod>2026-05-20</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>`);
+});
+
+app.get("/robots.txt", (req, res) => {
+  res.header("Content-Type", "text/plain");
+  res.send(`User-agent: *
+Allow: /
+
+Sitemap: https://beyond.openminded.vercel.app/sitemap.xml`);
+});
+
+app.get("/googlee8f7c6bd38f40bd0.html", (req, res) => {
+  res.header("Content-Type", "text/html");
+  res.send("google-site-verification: googlee8f7c6bd38f40bd0.html");
+});
+
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
