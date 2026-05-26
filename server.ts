@@ -1,6 +1,5 @@
 import express from "express";
 import path from "path";
-import { createServer as createViteServer } from "vite";
 import { OpenAI } from "openai";
 import { GoogleGenAI, Type } from "@google/genai";
 import dotenv from "dotenv";
@@ -96,7 +95,7 @@ Importance (1-10): ${importance}`;
     if (gemini) {
       console.log("Using Gemini primary engine...");
       const response = await gemini.models.generateContent({
-        model: "gemini-3-flash-preview",
+        model: "gemini-3.5-flash",
         contents: `${systemPrompt}\n\n${userPrompt}`,
         config: {
           responseMimeType: "application/json",
@@ -167,7 +166,8 @@ app.get("/api/health", (req, res) => {
 
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({
+    const { createServer } = await import("vite");
+    const vite = await createServer({
       server: { middlewareMode: true },
       appType: "spa",
     });
