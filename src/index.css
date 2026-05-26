@@ -9,108 +9,11 @@
 }
 
 [data-theme='light'] {
-  --bg-system: #fafafa;
-  --text-main: rgba(10, 10, 10, 0.9);
-  --text-muted: rgba(10, 10, 10, 0.45);
-  --glass-layer: rgba(0, 0, 0, 0.015);
-  --glass-border: rgba(0, 0, 0, 0.08);
-}
-
-[data-theme='light'] ::selection {
-  background-color: rgba(10, 10, 10, 0.9);
-  color: #fafafa;
-}
-
-[data-theme='light'] .text-white {
-  color: rgba(10, 10, 10, 0.9) !important;
-}
-
-[data-theme='light'] .text-white\/90 {
-  color: rgba(10, 10, 10, 0.9) !important;
-}
-
-[data-theme='light'] .text-white\/80 {
-  color: rgba(10, 10, 10, 0.8) !important;
-}
-
-[data-theme='light'] .text-white\/60 {
-  color: rgba(10, 10, 10, 0.6) !important;
-}
-
-[data-theme='light'] .text-white\/40 {
-  color: rgba(10, 10, 10, 0.4) !important;
-}
-
-[data-theme='light'] .text-white\/30 {
-  color: rgba(10, 10, 10, 0.3) !important;
-}
-
-[data-theme='light'] .text-white\/20 {
-  color: rgba(10, 10, 10, 0.2) !important;
-}
-
-[data-theme='light'] .text-white\/10 {
-  color: rgba(10, 10, 10, 0.1) !important;
-}
-
-[data-theme='light'] .hover\:text-white:hover {
-  color: rgba(10, 10, 10, 0.9) !important;
-}
-
-[data-theme='light'] .placeholder\:text-white\/20::placeholder {
-  color: rgba(10, 10, 10, 0.3) !important;
-}
-
-[data-theme='light'] .group-hover\:text-white:hover {
-  color: rgba(10, 10, 10, 1) !important;
-}
-
-[data-theme='light'] .group-hover\:text-white\/40:hover {
-  color: rgba(10, 10, 10, 0.4) !important;
-}
-
-[data-theme='light'] .text-gradient {
-  background: linear-gradient(to bottom, rgba(10, 10, 10, 0.95) 0%, rgba(10, 10, 10, 0.5) 100%) !important;
-  -webkit-background-clip: text !important;
-  color: transparent !important;
-}
-
-/* Background overrides */
-[data-theme='light'] .bg-white\/5 {
-  background-color: rgba(0, 0, 0, 0.04) !important;
-}
-
-[data-theme='light'] .bg-white\/10 {
-  background-color: rgba(0, 0, 0, 0.06) !important;
-}
-
-[data-theme='light'] .bg-white\/20 {
-  background-color: rgba(0, 0, 0, 0.1) !important;
-}
-
-[data-theme='light'] .bg-white\/\[0\.02\] {
-  background-color: rgba(0, 0, 0, 0.015) !important;
-}
-
-[data-theme='light'] .bg-white\/\[0\.03\] {
-  background-color: rgba(0, 0, 0, 0.02) !important;
-}
-
-[data-theme='light'] .bg-white\/\[0\.05\] {
-  background-color: rgba(0, 0, 0, 0.03) !important;
-}
-
-/* Border overrides */
-[data-theme='light'] .border-white\/5 {
-  border-color: rgba(0, 0, 0, 0.04) !important;
-}
-
-[data-theme='light'] .border-white\/10 {
-  border-color: rgba(0, 0, 0, 0.08) !important;
-}
-
-[data-theme='light'] .border-white\/20 {
-  border-color: rgba(0, 0, 0, 0.15) !important;
+  --bg-system: #f5f5f7;
+  --text-main: rgba(0, 0, 0, 0.9);
+  --text-muted: rgba(0, 0, 0, 0.4);
+  --glass-layer: rgba(0, 0, 0, 0.01);
+  --glass-border: rgba(0, 0, 0, 0.1);
 }
 
 @theme {
@@ -159,10 +62,6 @@
 
 .glass-morphism-strong {
   @apply bg-black/40 backdrop-blur-3xl border border-white/20;
-}
-
-[data-theme='light'] .glass-morphism-strong {
-  @apply bg-white/70 backdrop-blur-3xl border border-black/10;
 }
 
 .text-gradient {

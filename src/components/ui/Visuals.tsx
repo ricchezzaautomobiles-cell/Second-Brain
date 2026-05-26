@@ -29,7 +29,7 @@ export function GlassPanel({
 
   return (
     <div className={cn(
-      "bg-[var(--glass-layer)] border border-[var(--glass-border)] rounded-3xl",
+      "bg-white/[0.02] border border-white/10 rounded-3xl",
       blurs[intensity],
       className
     )}>

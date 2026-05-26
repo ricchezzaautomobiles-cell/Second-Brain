@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://beyond.openminded.vercel.app/sitemap.xml

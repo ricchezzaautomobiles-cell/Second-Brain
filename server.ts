@@ -1,6 +1,6 @@
 import express from "express";
 import path from "path";
-import fs from "fs";
+import { createServer as createViteServer } from "vite";
 import { OpenAI } from "openai";
 import { GoogleGenAI, Type } from "@google/genai";
 import dotenv from "dotenv";
@@ -96,7 +96,7 @@ Importance (1-10): ${importance}`;
     if (gemini) {
       console.log("Using Gemini primary engine...");
       const response = await gemini.models.generateContent({
-        model: "gemini-3.5-flash",
+        model: "gemini-3-flash-preview",
         contents: `${systemPrompt}\n\n${userPrompt}`,
         config: {
           responseMimeType: "application/json",
@@ -165,68 +165,8 @@ app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });
 
-// Explicit routes for SEO sitemap, robots.txt, and Search Console verification
-app.get("/sitemap.xml", (req, res) => {
-  try {
-    const sitemapPath = path.join(process.cwd(), "dist", "sitemap.xml");
-    if (fs.existsSync(sitemapPath)) {
-      res.header("Content-Type", "application/xml");
-      return res.sendFile(sitemapPath);
-    }
-    const publicSitemapPath = path.join(process.cwd(), "public", "sitemap.xml");
-    if (fs.existsSync(publicSitemapPath)) {
-      res.header("Content-Type", "application/xml");
-      return res.sendFile(publicSitemapPath);
-    }
-  } catch (error) {
-    console.error("Error serving sitemap.xml:", error);
-  }
-
-  // Fallback if files don't exist yet
-  res.header("Content-Type", "application/xml");
-  res.send(`<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://beyond.openminded.vercel.app</loc>
-    <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-</urlset>`);
-});
-
-app.get("/robots.txt", (req, res) => {
-  try {
-    const robotsPath = path.join(process.cwd(), "dist", "robots.txt");
-    if (fs.existsSync(robotsPath)) {
-      res.header("Content-Type", "text/plain");
-      return res.sendFile(robotsPath);
-    }
-    const publicRobotsPath = path.join(process.cwd(), "public", "robots.txt");
-    if (fs.existsSync(publicRobotsPath)) {
-      res.header("Content-Type", "text/plain");
-      return res.sendFile(publicRobotsPath);
-    }
-  } catch (error) {
-    console.error("Error serving robots.txt:", error);
-  }
-
-  // Fallback if files don't exist yet
-  res.header("Content-Type", "text/plain");
-  res.send(`User-agent: *
-Allow: /
-
-Sitemap: https://beyond.openminded.vercel.app/sitemap.xml`);
-});
-
-app.get("/googlee8f7c6bd38f40bd0.html", (req, res) => {
-  res.header("Content-Type", "text/html");
-  res.send("google-site-verification: googlee8f7c6bd38f40bd0.html");
-});
-
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
-    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
@@ -245,8 +185,4 @@ async function startServer() {
   });
 }
 
-if (!process.env.VERCEL) {
-  startServer();
-}
-
-export default app;
+startServer();
