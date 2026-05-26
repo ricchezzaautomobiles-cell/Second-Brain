@@ -10,9 +10,24 @@ export async function analyzeDecision(decisionData: Partial<Decision>): Promise<
   });
 
   if (!response.ok) {
-    const error = await response.json();
-    throw new Error(error.error || "Failed to analyze decision");
+    let errorMessage = "Failed to analyze decision";
+    try {
+      const error = await response.json();
+      errorMessage = error.error || errorMessage;
+    } catch {
+      try {
+        const text = await response.text();
+        errorMessage = text.substring(0, 150) || `HTTP error ${response.status}`;
+      } catch {
+        errorMessage = `HTTP error ${response.status}`;
+      }
+    }
+    throw new Error(errorMessage);
   }
 
-  return response.json();
+  try {
+    return await response.json();
+  } catch {
+    throw new Error("Could not parse analyze-decision backend response as JSON.");
+  }
 }
