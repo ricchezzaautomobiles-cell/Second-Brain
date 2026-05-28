@@ -23,7 +23,7 @@ export default function About() {
       <SEO 
         title="Our Philosophy & Mission | Beyond" 
         description="Escape digital overstimulation. Beyond is a movement and futuristic AI platform engineered for cognitive optimization, strategic deep thinking, and total mental clarity."
-        keywords="AI self improvement, mental optimization, cognitive enhancement, futuristic AI platform, deep thinking, strategic decision tool"
+        keywords="Beyond OpenMinded, Beyond AI assistant, Beyond mental clarity, Beyond cognitive AI, Think Clearly app, Beyond futuristic AI, mental clarity, AI mental clarity, improve focus, deep thinking, cognitive clarity, reduce mental noise, mindfulness technology, AI self improvement, future of AI, AI cognitive assistant, AI life optimization"
         canonical="https://beyond.openminded.vercel.app/about"
         schema={schema}
       />

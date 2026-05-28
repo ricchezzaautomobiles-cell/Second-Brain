@@ -53,7 +53,7 @@ export default function Features() {
       <SEO 
         title="Intelligence Features Index | Beyond" 
         description="Explore the features of Beyond: First Principles Analysis, Expected Value Matrix, Bias Detection, cognitive clarity modules, and real-time strategic assistance."
-        keywords="AI focus tool, focus improvement, cognitive clarity, dopamine overload, overthinking solution, strategic decision tool"
+        keywords="Beyond AI, Beyond OpenMinded, Beyond productivity AI, Beyond thinking assistant, Beyond focus AI, Think Clearly AI, mental clarity, mental clarity app, AI mental clarity, improve focus, deep thinking, cognitive clarity, reduce mental noise, overthinking solution, AI productivity, AI assistant, AI focus tool, AI thinking tool, smart productivity AI"
         canonical="https://beyond.openminded.vercel.app/features"
         schema={schema}
       />

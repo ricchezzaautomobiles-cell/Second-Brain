@@ -18,7 +18,7 @@ export default function ThinkClearly() {
       <SEO 
         title="Think Clearly — Escape Overthought | Beyond" 
         description="Escape visual overstimulation. Beyond is an AI-powered thinking assistant and cognitive clarity tool, structuring your parameters to yield strategic peace of mind."
-        keywords="deep thinking, cognitive clarity, dopamine overload, overthinking solution, improve concentration, mental optimization"
+        keywords="Think Clearly AI, Think Clearly app, beyond thinking assistant, Beyond OpenMinded, Beyond mental clarity, Beyond AI assistant, mental clarity, AI mental clarity, improve focus, deep thinking, cognitive clarity, reduce mental noise, dopamine overload, overthinking solution, clear thinking, mental performance, AI for thinking, AI cognitive assistant"
         canonical="https://beyond.openminded.vercel.app/think-clearly"
         schema={schema}
       />

@@ -23,7 +23,7 @@ export default function AI() {
       <SEO 
         title="AI-Powered Decision Intelligence | Beyond" 
         description="Discover how Beyond integrates the Google Gemini API to serve as a deep AI thinking assistant, optimizing neural clarity, eliminating emotional bias, and structuring choice parameters."
-        keywords="AI mental clarity, AI thinking assistant, thinking assistant, AI focus tool, cognitive clarity, cognitive enhancement"
+        keywords="Beyond AI, Beyond OpenMinded, Beyond AI assistant, Beyond productivity AI, Beyond thinking assistant, Beyond focus AI, Beyond cognitive AI, Think Clearly AI, Beyond futuristic AI, Beyond intelligent assistant, AI mental clarity, improve focus, cognitive clarity, mindfulness technology, AI productivity, AI assistant, AI focus tool, AI thinking tool, AI self improvement, future of AI, AI personal assistant, AI cognitive assistant, AI life optimization, AI workflow tool, smart productivity AI"
         canonical="https://beyond.openminded.vercel.app/ai"
         schema={schema}
       />

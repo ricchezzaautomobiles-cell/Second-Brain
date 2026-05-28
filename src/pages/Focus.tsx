@@ -18,7 +18,7 @@ export default function Focus() {
       <SEO 
         title="Uninterrupted Strategic Focus | Beyond" 
         description="Escape the reaction treadmill. Beyond uses minimalist, structured workspaces to preserve working memory, improve concentration, and optimize overall cognitive energy."
-        keywords="focus AI, focus improvement, improve concentration, cognitive clarity, digital overstimulation, mental optimization"
+        keywords="Beyond focus AI, Beyond AI assistant, Beyond OpenMinded, Beyond productivity AI, Think Clearly AI, improve focus, mental focus, focus improvement, reduce mental noise, dopamine overload, modern distraction, digital overstimulation, clear thinking, mindfulness technology, AI focus tool, AI workflow tool, smart productivity AI"
         canonical="https://beyond.openminded.vercel.app/focus"
         schema={schema}
       />

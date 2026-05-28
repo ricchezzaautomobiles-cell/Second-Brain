@@ -18,7 +18,7 @@ export default function MentalClarity() {
       <SEO 
         title="Escaping Overthinking & Anxieties | Beyond" 
         description="Escape visual fatigue. The Beyond mental clarity app uses first principles thinking and cognitive logic to separate signal from daily static noise."
-        keywords="mental clarity app, AI mental clarity, overthinking solution, cognitive clarity, dopamine overload, digital overstimulation"
+        keywords="Beyond mental clarity, Beyond OpenMinded, Beyond AI assistant, Beyond cognitive AI, Think Clearly app, mental clarity, mental clarity app, AI mental clarity, cognitive clarity, reduce mental noise, mental exhaustion, dopamine overload, modern distraction, overthinking solution, mind optimization, digital overstimulation, mindfulness technology, AI self improvement, AI life optimization"
         canonical="https://beyond.openminded.vercel.app/mental-clarity"
         schema={schema}
       />
