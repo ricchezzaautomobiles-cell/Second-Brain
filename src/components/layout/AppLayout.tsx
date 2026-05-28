@@ -1,11 +1,29 @@
 import React, { ReactNode } from "react";
 import { Sidebar } from "./Sidebar";
+import { PublicHeader } from "./PublicHeader";
+import { PublicFooter } from "./PublicFooter";
 import { useLocation } from "react-router-dom";
 import { motion, AnimatePresence } from "motion/react";
 
 export function AppLayout({ children }: { children: ReactNode }) {
   const location = useLocation();
-  const isAuthPage = location.pathname === "/" || location.pathname === "/auth";
+
+  const publicRoutes = [
+    "/",
+    "/about",
+    "/features",
+    "/ai",
+    "/think-clearly",
+    "/focus",
+    "/mental-clarity",
+    "/blog",
+    "/privacy",
+    "/terms",
+    "/contact"
+  ];
+
+  const isPublicPage = publicRoutes.includes(location.pathname) || location.pathname.startsWith("/blog/");
+  const isAuthPage = location.pathname === "/auth";
 
   if (isAuthPage) {
     return (
@@ -24,6 +42,28 @@ export function AppLayout({ children }: { children: ReactNode }) {
     );
   }
 
+  if (isPublicPage) {
+    return (
+      <div className="flex flex-col min-h-screen bg-[#050505] text-[#f5f5f7]">
+        <PublicHeader />
+        <AnimatePresence mode="wait">
+          <motion.main 
+            key={location.pathname}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="flex-1 pt-20"
+          >
+            {children}
+          </motion.main>
+        </AnimatePresence>
+        <PublicFooter />
+      </div>
+    );
+  }
+
+  // Dashboard / private sections with standard Sidebar layout
   return (
     <div className="flex min-h-screen bg-[var(--bg-system)]">
       <Sidebar />

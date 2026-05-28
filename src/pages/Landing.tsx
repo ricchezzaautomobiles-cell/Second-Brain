@@ -20,20 +20,7 @@ export default function Landing() {
         <div className="absolute inset-0 bg-[#050505]/40 backdrop-blur-[2px]" />
       </div>
 
-      <nav className="relative z-20 flex items-center justify-between px-8 py-6 max-w-7xl mx-auto border-b border-white/5">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-white flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.2)]">
-            <Brain className="text-black" size={20} />
-          </div>
-          <span className="text-xl font-semibold tracking-tighter text-white">Beyond</span>
-        </div>
-        <div className="flex items-center gap-8">
-          <Link to="/auth" className="text-xs font-bold uppercase tracking-widest text-white/40 hover:text-white transition-colors">Login</Link>
-          <Link to="/auth">
-            <Button variant="primary" size="sm" className="rounded-xl">Initialize</Button>
-          </Link>
-        </div>
-      </nav>
+
 
       <div className="relative z-10">
         {/* Compressed Hero */}

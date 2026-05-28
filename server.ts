@@ -160,6 +160,46 @@ Importance (1-10): ${importance}`;
   }
 });
 
+app.get("/robots.txt", (req, res) => {
+  res.type("text/plain");
+  res.send(`User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /new-decision
+Disallow: /history
+Disallow: /insights
+Disallow: /settings
+Disallow: /decision/
+
+Sitemap: https://beyond.openminded.vercel.app/sitemap.xml`);
+});
+
+app.get("/sitemap.xml", (req, res) => {
+  res.type("application/xml");
+  res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://beyond.openminded.vercel.app/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://beyond.openminded.vercel.app/about</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://beyond.openminded.vercel.app/features</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://beyond.openminded.vercel.app/ai</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://beyond.openminded.vercel.app/think-clearly</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://beyond.openminded.vercel.app/focus</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://beyond.openminded.vercel.app/mental-clarity</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://beyond.openminded.vercel.app/blog</loc><changefreq>daily</changefreq><priority>0.8</priority></url>
+  <url><loc>https://beyond.openminded.vercel.app/contact</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://beyond.openminded.vercel.app/privacy</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://beyond.openminded.vercel.app/terms</loc><changefreq>monthly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://beyond.openminded.vercel.app/blog/why-modern-minds-are-overloaded</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://beyond.openminded.vercel.app/blog/dopamine-overload-mental-fatigue</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://beyond.openminded.vercel.app/blog/ai-improve-mental-clarity</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://beyond.openminded.vercel.app/blog/problem-with-infinite-scrolling</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://beyond.openminded.vercel.app/blog/why-deep-thinking-is-disappearing</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://beyond.openminded.vercel.app/blog/psychology-of-distraction</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://beyond.openminded.vercel.app/blog/technology-cognitive-overload</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://beyond.openminded.vercel.app/blog/reclaiming-focus-ai-era</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+</urlset>`);
+});
+
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });
