@@ -6,32 +6,13 @@ import { GlowingOrb } from "../components/ui/Visuals";
 import { Link } from "react-router-dom";
 import { Typewriter } from "../components/ui/Typewriter";
 import { AIDemo } from "../components/landing/AIDemo";
-import { SEO } from "../components/SEO";
 
 export default function Landing() {
   const { scrollYProgress } = useScroll();
   const y1 = useTransform(scrollYProgress, [0, 1], [0, -100]);
 
-  const landingSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebApplication",
-    "name": "Beyond",
-    "alternateName": "Beyond OpenMinded",
-    "description": "Beyond is a futuristic AI-powered mental clarity, focus, and strategic thinking assistant designed to quiet mental noise, relieve modern distraction, and optimize complex decision-making.",
-    "applicationCategory": "ProductivityApplication",
-    "operatingSystem": "All",
-    "browserRequirements": "Requires JavaScript. Requires HTML5."
-  };
-
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#050505]">
-      <SEO 
-        title="Future of AI-Powered Mental Clarity & Strategic Focus" 
-        description="Escape digital overstimulation and dopamine overload. Beyond is the ultimate AI thinking assistant and focus tool built for mind optimization, deep thinking, and clear decision intelligence."
-        keywords="Beyond AI, Beyond OpenMinded, Beyond AI assistant, Beyond mental clarity, Beyond productivity AI, Beyond thinking assistant, Beyond focus AI, Beyond cognitive AI, Think Clearly AI, Think Clearly app, Beyond futuristic AI, Beyond intelligent assistant, mental clarity, mental clarity app, AI mental clarity, improve focus, deep thinking, cognitive clarity, mental focus, focus improvement, reduce mental noise, mental exhaustion, dopamine overload, modern distraction, overthinking solution, mind optimization, digital overstimulation, clear thinking, mental performance, mindfulness technology, AI productivity, AI assistant, AI focus tool, AI thinking tool, AI self improvement, future of AI, AI for students, AI for work, AI for thinking, AI personal assistant, AI cognitive assistant, AI life optimization, AI workflow tool, smart productivity AI"
-        canonical="https://beyond.openminded.vercel.app/"
-        schema={landingSchema}
-      />
       {/* Cinematic Ambient Gradients */}
       <div className="fixed inset-0 z-0">
         <GlowingOrb className="top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-600/10 blur-[120px]" />
@@ -39,7 +20,20 @@ export default function Landing() {
         <div className="absolute inset-0 bg-[#050505]/40 backdrop-blur-[2px]" />
       </div>
 
-
+      <nav className="relative z-20 flex items-center justify-between px-8 py-6 max-w-7xl mx-auto border-b border-white/5">
+        <div className="flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-xl bg-white flex items-center justify-center shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+            <Brain className="text-black" size={20} />
+          </div>
+          <span className="text-xl font-semibold tracking-tighter text-white">Beyond</span>
+        </div>
+        <div className="flex items-center gap-8">
+          <Link to="/auth" className="text-xs font-bold uppercase tracking-widest text-white/40 hover:text-white transition-colors">Login</Link>
+          <Link to="/auth">
+            <Button variant="primary" size="sm" className="rounded-xl">Initialize</Button>
+          </Link>
+        </div>
+      </nav>
 
       <div className="relative z-10">
         {/* Compressed Hero */}

@@ -11,19 +11,6 @@ import History from "./pages/History";
 import Insights from "./pages/Insights";
 import Settings from "./pages/Settings";
 import DecisionDetails from "./pages/DecisionDetails";
-
-// Import newly designed indexable public pages
-import About from "./pages/About";
-import Features from "./pages/Features";
-import AI from "./pages/AI";
-import ThinkClearly from "./pages/ThinkClearly";
-import Focus from "./pages/Focus";
-import MentalClarity from "./pages/MentalClarity";
-import Blog from "./pages/Blog";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import Terms from "./pages/Terms";
-import Contact from "./pages/Contact";
-
 import { User } from "@supabase/supabase-js";
 import { isSupabaseConfigured } from "./lib/supabase";
 
@@ -85,10 +72,10 @@ export default function App() {
           <p className="text-xs uppercase tracking-[0.3em] font-medium text-white/40 animate-pulse">Initializing System</p>
           <div className="w-32 h-[1px] bg-white/10 overflow-hidden rounded-full">
             <motion.div 
-               initial={{ x: "-100%" }}
-               animate={{ x: "100%" }}
-               transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-               className="w-full h-full bg-white/60"
+              initial={{ x: "-100%" }}
+              animate={{ x: "100%" }}
+              transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
+              className="w-full h-full bg-white/60"
             />
           </div>
         </div>
@@ -100,26 +87,9 @@ export default function App() {
     <Router>
       <AppLayout>
         <Routes>
-          {/* Public Indexable SEO Pages */}
-          <Route path="/" element={<Landing />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/features" element={<Features />} />
-          <Route path="/ai" element={<AI />} />
-          <Route path="/think-clearly" element={<ThinkClearly />} />
-          <Route path="/focus" element={<Focus />} />
-          <Route path="/mental-clarity" element={<MentalClarity />} />
-          
-          {/* Multi-route Blog Chronicles System */}
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<Blog />} />
-          
-          {/* Contact and Agreement Outlets */}
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/privacy" element={<PrivacyPolicy />} />
-          <Route path="/terms" element={<Terms />} />
-
-          {/* Authenticated Decision Console Routing */}
+          <Route path="/" element={user ? <Navigate to="/dashboard" /> : <Landing />} />
           <Route path="/auth" element={user ? <Navigate to="/dashboard" /> : <Auth />} />
+          
           <Route 
             path="/dashboard" 
             element={user ? <Dashboard user={user} /> : <Navigate to="/auth" />} 

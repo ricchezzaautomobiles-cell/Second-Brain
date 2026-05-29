@@ -1,10 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /dashboard
-Disallow: /new-decision
-Disallow: /history
-Disallow: /insights
-Disallow: /settings
-Disallow: /decision/
 
 Sitemap: https://beyond.openminded.vercel.app/sitemap.xml
