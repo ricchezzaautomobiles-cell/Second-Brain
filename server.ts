@@ -161,28 +161,6 @@ Importance (1-10): ${importance}`;
   }
 });
 
-app.get("/sitemap.xml", (req, res) => {
-  const publicPath = path.join(process.cwd(), "public", "sitemap.xml");
-  const distPath = path.join(process.cwd(), "dist", "sitemap.xml");
-  res.type("application/xml");
-  res.sendFile(distPath, (err) => {
-    if (err) {
-      res.sendFile(publicPath);
-    }
-  });
-});
-
-app.get("/robots.txt", (req, res) => {
-  const publicPath = path.join(process.cwd(), "public", "robots.txt");
-  const distPath = path.join(process.cwd(), "dist", "robots.txt");
-  res.type("text/plain");
-  res.sendFile(distPath, (err) => {
-    if (err) {
-      res.sendFile(publicPath);
-    }
-  });
-});
-
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });
