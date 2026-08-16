@@ -7,6 +7,7 @@ import { Decision } from "../types";
 import { formatDate } from "../lib/utils";
 import { storage } from "../lib/storage";
 import { Link } from "react-router-dom";
+import { AdBanner } from "../components/ads/AdBanner";
 
 export default function History({ user }: { user: User }) {
   const [decisions, setDecisions] = useState<Decision[]>([]);
@@ -98,6 +99,14 @@ export default function History({ user }: { user: User }) {
           </div>
         )}
       </div>
+
+      <AdBanner
+        id="history-ad-2"
+        adClient="ca-pub-5297627506856360"
+        adSlot="7752069290"
+        slotLabel="Sponsored"
+        showPlaceholderIfUnset={false}
+      />
     </div>
   );
 }

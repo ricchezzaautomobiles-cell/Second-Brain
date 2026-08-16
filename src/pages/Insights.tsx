@@ -89,8 +89,10 @@ export default function Insights({ user }: { user: User }) {
       </div>
 
       <AdBanner
-        id="insights-bottom-ad"
-        slotLabel="Sponsored Resource"
+        id="insights-ad-2"
+        adClient="ca-pub-5297627506856360"
+        adSlot="7752069290"
+        slotLabel="Sponsored Analysis"
         showPlaceholderIfUnset={false}
       />
     </div>
