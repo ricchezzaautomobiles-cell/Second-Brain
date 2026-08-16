@@ -6,6 +6,7 @@ import { GlowingOrb } from "../components/ui/Visuals";
 import { Link } from "react-router-dom";
 import { Typewriter } from "../components/ui/Typewriter";
 import { AIDemo } from "../components/landing/AIDemo";
+import { AdBanner } from "../components/ads/AdBanner";
 
 export default function Landing() {
   const { scrollYProgress } = useScroll();
@@ -257,6 +258,18 @@ export default function Landing() {
               </Button>
             </Link>
           </motion.div>
+        </section>
+
+        {/* Sponsor / Ad Unit */}
+        <section className="px-8 max-w-5xl mx-auto pb-16">
+          <AdBanner 
+            id="landing-bottom-ad"
+            slotLabel="Partner Spotlight"
+            sponsorTitle="OpenMinded Strategy & Compute"
+            sponsorDescription="High-precision cognitive modeling frameworks and AI tools designed for strategic clarity."
+            sponsorLink="https://beyond.openminded.vercel.app"
+            sponsorCta="Explore Tools"
+          />
         </section>
       </div>
 

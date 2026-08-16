@@ -2,6 +2,7 @@ import React from "react";
 import { User } from "@supabase/supabase-js";
 import { Zap, TrendingUp, AlertTriangle, Heart, Target, PieChart, BarChart3 } from "lucide-react";
 import { Card } from "../components/ui/Base";
+import { AdBanner } from "../components/ads/AdBanner";
 
 export default function Insights({ user }: { user: User }) {
   return (
@@ -86,6 +87,12 @@ export default function Insights({ user }: { user: User }) {
           <p className="text-xs text-white/40 font-light leading-relaxed">Sunk cost fallacy detected in 3 past decisions. Be mindful of legacy commitments.</p>
         </Card>
       </div>
+
+      <AdBanner
+        id="insights-bottom-ad"
+        slotLabel="Sponsored Resource"
+        showPlaceholderIfUnset={false}
+      />
     </div>
   );
 }

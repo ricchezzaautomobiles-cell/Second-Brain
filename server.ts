@@ -183,6 +183,17 @@ app.get("/robots.txt", (req, res) => {
   });
 });
 
+app.get("/ads.txt", (req, res) => {
+  const publicPath = path.join(process.cwd(), "public", "ads.txt");
+  const distPath = path.join(process.cwd(), "dist", "ads.txt");
+  res.type("text/plain");
+  res.sendFile(distPath, (err) => {
+    if (err) {
+      res.sendFile(publicPath);
+    }
+  });
+});
+
 app.get("/api/health", (req, res) => {
   res.json({ status: "ok" });
 });
