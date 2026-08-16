@@ -260,10 +260,20 @@ export default function Landing() {
           </motion.div>
         </section>
 
-        {/* Sponsor / Ad Unit */}
+        {/* Google AdSense Unit */}
+        <section className="px-8 max-w-5xl mx-auto pb-8">
+          <AdBanner 
+            id="landing-adsense-ad-1"
+            adClient="ca-pub-5297627506856360"
+            adSlot="9419685822"
+            slotLabel="Advertisement"
+          />
+        </section>
+
+        {/* Sponsor / Partner Unit */}
         <section className="px-8 max-w-5xl mx-auto pb-16">
           <AdBanner 
-            id="landing-bottom-ad"
+            id="landing-bottom-sponsor"
             slotLabel="Partner Spotlight"
             sponsorTitle="OpenMinded Strategy & Compute"
             sponsorDescription="High-precision cognitive modeling frameworks and AI tools designed for strategic clarity."

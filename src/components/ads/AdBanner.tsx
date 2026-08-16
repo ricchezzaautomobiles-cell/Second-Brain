@@ -24,11 +24,11 @@ interface AdBannerProps {
 export const AdBanner: React.FC<AdBannerProps> = ({
   id = "ad-slot",
   adClient = import.meta.env.VITE_ADSENSE_CLIENT_ID || "ca-pub-5297627506856360",
-  adSlot = import.meta.env.VITE_ADSENSE_SLOT_ID || "",
+  adSlot = import.meta.env.VITE_ADSENSE_SLOT_ID || "9419685822",
   adFormat = "auto",
   fullWidthResponsive = true,
   className = "",
-  slotLabel = "Sponsored",
+  slotLabel = "Advertisement",
   sponsorTitle,
   sponsorDescription,
   sponsorLink,
@@ -97,11 +97,12 @@ export const AdBanner: React.FC<AdBannerProps> = ({
       >
         <div className="flex items-center justify-between px-2 mb-2 text-[9px] uppercase tracking-[0.25em] text-white/20">
           <span>{slotLabel}</span>
-          <span>Google Ad</span>
+          <span>Google AdSense</span>
         </div>
         <ins
           ref={adRef}
-          className="adsbygoogle block min-h-[90px] w-full"
+          className="adsbygoogle"
+          style={{ display: "block", minHeight: "90px" }}
           data-ad-client={adClient}
           data-ad-slot={adSlot}
           data-ad-format={adFormat}
