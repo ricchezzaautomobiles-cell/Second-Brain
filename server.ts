@@ -1,220 +1,164 @@
-import express from "express";
-import path from "path";
-import { createServer as createViteServer } from "vite";
-import { OpenAI } from "openai";
-import { GoogleGenAI, Type } from "@google/genai";
-import dotenv from "dotenv";
+import express from 'express';
+import path from 'path';
+import fs from 'fs';
+import { GoogleGenAI, Type } from '@google/genai';
+import { createServer as createViteServer } from 'vite';
 
-dotenv.config();
+async function startServer() {
+  const app = express();
+  const PORT = 3000;
 
-const app = express();
-const PORT = 3000;
+  app.use(express.json());
 
-app.use(express.json());
+  // Health route
+  app.get('/api/health', (req, res) => {
+    res.json({ status: 'ok', timestamp: new Date().toISOString() });
+  });
 
-// Lazy-loaded AI clients
-let openai: OpenAI | null = null;
-let genAI: GoogleGenAI | null = null;
+  // Direct sitemap routes
+  app.get(['/sitemap.xml', '/sitemap'], (req, res) => {
+    const sitemapPath = path.resolve(process.cwd(), 'public', 'sitemap.xml');
+    if (fs.existsSync(sitemapPath)) {
+      res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+      return res.sendFile(sitemapPath);
+    }
+    const distSitemap = path.resolve(process.cwd(), 'dist', 'sitemap.xml');
+    if (fs.existsSync(distSitemap)) {
+      res.setHeader('Content-Type', 'application/xml; charset=utf-8');
+      return res.sendFile(distSitemap);
+    }
+    res.status(404).send('Sitemap not found');
+  });
 
-function getOpenAI() {
-  if (!openai && process.env.OPENAI_API_KEY) {
-    openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
-  }
-  return openai;
-}
+  // Direct robots.txt route
+  app.get('/robots.txt', (req, res) => {
+    const robotsPath = path.resolve(process.cwd(), 'public', 'robots.txt');
+    if (fs.existsSync(robotsPath)) {
+      res.setHeader('Content-Type', 'text/plain; charset=utf-8');
+      return res.sendFile(robotsPath);
+    }
+    res.status(404).send('Not found');
+  });
 
-function getGemini() {
-  if (!genAI && process.env.GEMINI_API_KEY) {
-    genAI = new GoogleGenAI({
-      apiKey: process.env.GEMINI_API_KEY,
-      httpOptions: {
-        headers: {
-          'User-Agent': 'aistudio-build',
-        }
+  // AI Analysis route (Server-side Gemini API)
+  app.post('/api/ai/analyze', async (req, res) => {
+    try {
+      const { content, recipientCategory } = req.body;
+
+      if (!content || typeof content !== 'string' || content.trim().length < 5) {
+        return res.status(400).json({ message: 'Message content is required and must be at least 5 characters.' });
       }
-    });
-  }
-  return genAI;
-}
 
-// API Routes
-app.post("/api/analyze-decision", async (req, res) => {
-  try {
-    const { 
-      title, 
-      description, 
-      options, 
-      goal, 
-      fear, 
-      constraints, 
-      emotion, 
-      importance 
-    } = req.body;
+      const apiKey = process.env.GEMINI_API_KEY;
+      if (!apiKey) {
+        return res.status(500).json({
+          message: 'GEMINI_API_KEY is not configured on the server. Please check Settings > Secrets.',
+        });
+      }
 
-    const systemPrompt = `You are "Beyond", an elite strategic advisor powered by OpenMinded Intelligence. 
-Your personality is calm, wise, deeply thoughtful, and non-judgmental. 
-You help ambitious individuals reduce mental noise and overthinking by deconstructing complexity with profound clarity.
+      const ai = new GoogleGenAI({
+        apiKey,
+        httpOptions: {
+          headers: {
+            'User-Agent': 'aistudio-build',
+          },
+        },
+      });
 
-Your goal is to provide "Strategic Peace of Mind." 
+      const prompt = `Analyze the emotional tone and underlying subtext of this unsent message written to "${recipientCategory || 'someone'}":
 
-Analyze decisions using:
-* first principles thinking
-* opportunity cost analysis
-* long-term reasoning
-* expected value
-* emotional bias detection (naming the emotion to provide relief)
-* strategic prioritization
+"${content}"
 
-Avoid generic motivational advice. Focus on structural truth and giving the user a clear, calm path forward.
+Provide a compassionate, empathetic analysis formatted as JSON.
+Guidelines:
+1. Identify 2 to 4 primary emotions present in the text with intensity percentages adding up to 100%.
+2. Describe the underlying intention using gentle, tentative wording (e.g. "may suggest", "might indicate", "appears to reflect").
+3. Provide a thoughtful reflection or insight (e.g. "one possible interpretation is...").
+4. Provide a supportive writing prompt to help the author process their feelings.
+5. NEVER state psychological or psychiatric diagnoses as facts. Do not give medical or clinical advice.`;
 
-Output format MUST be a JSON object with the following keys:
-1. strategicAnalysis (string)
-2. coreTradeoffs (string)
-3. riskAnalysis (string)
-4. opportunityCost (string)
-5. emotionalBiasDetection (string)
-6. recommendedPath (string)
-7. nextBestActions (string)
-8. longTermOutlook (string)
-9. clarityScore (number 0-100)
-10. confidenceLevel (number 0-100)`;
-
-    const userPrompt = `
-Decision Title: ${title}
-Situation: ${description}
-Options: ${options}
-Main Goal: ${goal}
-Biggest Fear: ${fear}
-Time Constraints: ${constraints}
-Current Emotional State: ${emotion}
-Importance (1-10): ${importance}`;
-
-    console.log("Analyzing decision:", title);
-    let result;
-    const gemini = getGemini();
-
-    if (gemini) {
-      console.log("Using Gemini primary engine...");
-      const response = await gemini.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: `${systemPrompt}\n\n${userPrompt}`,
+      const response = await ai.models.generateContent({
+        model: 'gemini-3.6-flash',
+        contents: prompt,
         config: {
-          responseMimeType: "application/json",
+          systemInstruction:
+            'You are an empathetic, emotionally intelligent assistant for UNSENT, a private journal app. Your task is to offer compassionate, cautious subtext analysis of unsent messages without diagnosing mental health or judging the writer.',
+          responseMimeType: 'application/json',
           responseSchema: {
             type: Type.OBJECT,
             properties: {
-              strategicAnalysis: { type: Type.STRING },
-              coreTradeoffs: { type: Type.STRING },
-              riskAnalysis: { type: Type.STRING },
-              opportunityCost: { type: Type.STRING },
-              emotionalBiasDetection: { type: Type.STRING },
-              recommendedPath: { type: Type.STRING },
-              nextBestActions: { type: Type.STRING },
-              longTermOutlook: { type: Type.STRING },
-              clarityScore: { type: Type.NUMBER },
-              confidenceLevel: { type: Type.NUMBER },
+              emotions: {
+                type: Type.ARRAY,
+                items: {
+                  type: Type.OBJECT,
+                  properties: {
+                    emotion: { type: Type.STRING, description: 'Name of emotion (e.g. Longing, Regret, Hope, Fear, Love, Anger)' },
+                    intensityPercentage: { type: Type.NUMBER, description: 'Percentage score from 0 to 100' },
+                  },
+                  required: ['emotion', 'intensityPercentage'],
+                },
+              },
+              underlyingIntention: {
+                type: Type.STRING,
+                description: 'Underlying intention using cautious wording like "may suggest" or "might indicate"',
+              },
+              reflection: {
+                type: Type.STRING,
+                description: 'Reflective insight into the subtext',
+              },
+              writingPrompt: {
+                type: Type.STRING,
+                description: 'Supportive journaling prompt for self-reflection',
+              },
             },
-            required: [
-              "strategicAnalysis", 
-              "coreTradeoffs", 
-              "riskAnalysis", 
-              "opportunityCost", 
-              "emotionalBiasDetection", 
-              "recommendedPath", 
-              "nextBestActions", 
-              "longTermOutlook", 
-              "clarityScore", 
-              "confidenceLevel"
-            ]
-          }
-        }
+            required: ['emotions', 'underlyingIntention', 'reflection', 'writingPrompt'],
+          },
+        },
       });
-      
-      try {
-        result = JSON.parse(response.text || "{}");
-      } catch (e) {
-        console.error("Gemini Parse Error:", e);
-        result = { error: "Failed to parse AI response." };
-      }
-    } else {
-      console.log("Gemini not configured, falling back to OpenAI...");
-      const ai = getOpenAI();
-      if (!ai) {
-        return res.status(500).json({ error: "AI services not configured. Please set GEMINI_API_KEY (recommended) or OPENAI_API_KEY." });
-      }
-      
-      const response = await ai.chat.completions.create({
-        model: "gpt-4o",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userPrompt }
-        ],
-        response_format: { type: "json_object" }
+
+      const responseText = response.text || '{}';
+      const parsedAnalysis = JSON.parse(responseText);
+
+      res.json({ analysis: parsedAnalysis });
+    } catch (error: any) {
+      console.error('Error in /api/ai/analyze:', error);
+      res.status(500).json({
+        message: error?.message || 'Failed to analyze text. Please try again.',
       });
-      result = JSON.parse(response.choices[0].message.content || "{}");
-    }
-    console.log("Analysis complete.");
-    res.json(result);
-  } catch (error: any) {
-    console.error("AI Analysis Error:", error);
-    res.status(500).json({ error: error.message });
-  }
-});
-
-app.get("/sitemap.xml", (req, res) => {
-  const publicPath = path.join(process.cwd(), "public", "sitemap.xml");
-  const distPath = path.join(process.cwd(), "dist", "sitemap.xml");
-  res.type("application/xml");
-  res.sendFile(distPath, (err) => {
-    if (err) {
-      res.sendFile(publicPath);
     }
   });
-});
 
-app.get("/robots.txt", (req, res) => {
-  const publicPath = path.join(process.cwd(), "public", "robots.txt");
-  const distPath = path.join(process.cwd(), "dist", "robots.txt");
-  res.type("text/plain");
-  res.sendFile(distPath, (err) => {
-    if (err) {
-      res.sendFile(publicPath);
-    }
-  });
-});
-
-app.get("/ads.txt", (req, res) => {
-  const publicPath = path.join(process.cwd(), "public", "ads.txt");
-  const distPath = path.join(process.cwd(), "dist", "ads.txt");
-  res.type("text/plain");
-  res.sendFile(distPath, (err) => {
-    if (err) {
-      res.sendFile(publicPath);
-    }
-  });
-});
-
-app.get("/api/health", (req, res) => {
-  res.json({ status: "ok" });
-});
-
-async function startServer() {
-  if (process.env.NODE_ENV !== "production") {
+  // Vite integration
+  if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
       server: { middlewareMode: true },
-      appType: "spa",
+      appType: 'spa',
     });
     app.use(vite.middlewares);
+    app.use('*', async (req, res, next) => {
+      if (req.originalUrl.startsWith('/api')) {
+        return next();
+      }
+      try {
+        const url = req.originalUrl;
+        const templatePath = path.resolve(process.cwd(), 'index.html');
+        let template = fs.readFileSync(templatePath, 'utf-8');
+        template = await vite.transformIndexHtml(url, template);
+        res.status(200).set({ 'Content-Type': 'text/html' }).end(template);
+      } catch (e) {
+        next(e);
+      }
+    });
   } else {
-    const distPath = path.join(process.cwd(), "dist");
+    const distPath = path.join(process.cwd(), 'dist');
     app.use(express.static(distPath));
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(distPath, 'index.html'));
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`UNSENT Server running on http://0.0.0.0:${PORT}`);
   });
 }
 

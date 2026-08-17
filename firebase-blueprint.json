@@ -1,0 +1,83 @@
+{
+  "entities": {
+    "profiles": {
+      "title": "User Profiles",
+      "description": "User account details and display names",
+      "properties": {
+        "id": { "type": "string", "description": "User ID" },
+        "display_name": { "type": "string", "description": "Display name" },
+        "avatar_url": { "type": "string", "description": "Avatar URL" },
+        "email": { "type": "string", "description": "User email address" },
+        "created_at": { "type": "string", "description": "Creation timestamp" },
+        "updated_at": { "type": "string", "description": "Update timestamp" }
+      }
+    },
+    "unsent_messages": {
+      "title": "Unsent Messages",
+      "description": "Private and anonymous unsent letters",
+      "properties": {
+        "id": { "type": "string", "description": "Message ID" },
+        "user_id": { "type": "string", "description": "Author User ID" },
+        "content": { "type": "string", "description": "Message content" },
+        "visibility": { "type": "string", "description": "private | anonymous | deleted" },
+        "recipient_category": { "type": "string", "description": "Recipient category" },
+        "created_at": { "type": "string", "description": "Created at" },
+        "updated_at": { "type": "string", "description": "Updated at" },
+        "released_at": { "type": "string", "description": "Released at" },
+        "deleted_at": { "type": "string", "description": "Deleted at" }
+      }
+    },
+    "reactions": {
+      "title": "Reactions",
+      "description": "Reactions given to anonymous messages",
+      "properties": {
+        "id": { "type": "string", "description": "Reaction ID" },
+        "message_id": { "type": "string", "description": "Target message ID" },
+        "user_id": { "type": "string", "description": "Reactor User ID" },
+        "reaction_type": { "type": "string", "description": "felt_this | not_alone | understand | stayed_with_me" },
+        "created_at": { "type": "string", "description": "Creation timestamp" }
+      }
+    },
+    "time_capsules": {
+      "title": "Time Capsules",
+      "description": "Future time capsules",
+      "properties": {
+        "id": { "type": "string", "description": "Capsule ID" },
+        "user_id": { "type": "string", "description": "Owner User ID" },
+        "content": { "type": "string", "description": "Content" },
+        "unlock_at": { "type": "string", "description": "Unlock timestamp" },
+        "created_at": { "type": "string", "description": "Created timestamp" },
+        "opened_at": { "type": "string", "description": "Opened timestamp" },
+        "sealed": { "type": "boolean", "description": "Is sealed" },
+        "reflection": { "type": "string", "description": "Reflection note" },
+        "would_send": { "type": "string", "description": "Would send answer" },
+        "updated_at": { "type": "string", "description": "Update timestamp" }
+      }
+    },
+    "ai_analyses": {
+      "title": "AI Analyses",
+      "description": "Saved emotional analyses",
+      "properties": {
+        "id": { "type": "string", "description": "Analysis ID" },
+        "user_id": { "type": "string", "description": "User ID" },
+        "message_id": { "type": "string", "description": "Associated message ID" },
+        "analysis_type": { "type": "string", "description": "Analysis type" },
+        "result": { "type": "object", "description": "Analysis result JSON" },
+        "created_at": { "type": "string", "description": "Timestamp" }
+      }
+    },
+    "reports": {
+      "title": "Message Reports",
+      "description": "Community moderation reports",
+      "properties": {
+        "id": { "type": "string", "description": "Report ID" },
+        "message_id": { "type": "string", "description": "Reported message ID" },
+        "reporter_id": { "type": "string", "description": "Reporter User ID" },
+        "reason": { "type": "string", "description": "Reason" },
+        "details": { "type": "string", "description": "Details" },
+        "status": { "type": "string", "description": "pending | reviewed | actioned" },
+        "created_at": { "type": "string", "description": "Creation timestamp" }
+      }
+    }
+  }
+}

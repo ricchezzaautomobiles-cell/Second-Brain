@@ -1,6 +1,6 @@
 {
-  "name": "Beyond",
-  "description": "An elite AI-powered decision intelligence system for strategic life and career optimization.",
+  "name": "Unsent: Unspoken Vault",
+  "description": "Say it without sending it. A privacy-first platform to write, keep private, anonymously release, or seal time-capsule messages you never sent.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
