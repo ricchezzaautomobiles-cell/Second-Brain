@@ -1,33 +1,27 @@
 /// <reference types="vite/client" />
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { createClient } from "@supabase/supabase-js";
 
-const supabaseUrl = (import.meta.env.VITE_SUPABASE_URL || '').trim();
-const supabaseAnonKey = (import.meta.env.VITE_SUPABASE_ANON_KEY || '').trim();
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || "";
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || "";
 
-export const isSupabaseConfigured = (): boolean => {
-  return Boolean(
-    supabaseUrl &&
-    supabaseAnonKey &&
-    supabaseUrl.startsWith('https://') &&
-    !supabaseUrl.includes('YOUR_SUPABASE') &&
-    !supabaseUrl.includes('placeholder') &&
-    supabaseAnonKey.length > 20 &&
-    !supabaseAnonKey.includes('placeholder')
-  );
-};
-
-// Fallback dummy client if credentials aren't set yet
-const fallbackUrl = 'https://placeholder.supabase.co';
-const fallbackKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.placeholder';
-
-export const supabase: SupabaseClient = createClient(
-  isSupabaseConfigured() ? supabaseUrl : fallbackUrl,
-  isSupabaseConfigured() ? supabaseAnonKey : fallbackKey,
-  {
-    auth: {
-      persistSession: true,
-      autoRefreshToken: true,
-      detectSessionInUrl: true,
-    },
+function cleanUrl(url: string) {
+  if (!url) return "";
+  try {
+    const parsed = new URL(url);
+    // Ensure we only have protocol and host (no trailing slash or paths)
+    return `${parsed.protocol}//${parsed.host}`;
+  } catch {
+    return url.trim().replace(/\/+$/, "");
   }
-);
+}
+
+// Only create the client if we have valid-looking credentials
+const cleanedUrl = cleanUrl(supabaseUrl);
+export const isSupabaseConfigured = !!(cleanedUrl && supabaseAnonKey && cleanedUrl.startsWith("http"));
+export const supabase = isSupabaseConfigured 
+  ? createClient(cleanedUrl, supabaseAnonKey)
+  : null;
+
+if (!supabase) {
+  console.warn("Supabase credentials missing. Auth and DB features are disabled until configured in the Secrets panel.");
+}

@@ -1,8 +1,14 @@
 User-agent: *
 Allow: /
-Disallow: /profile
+Allow: /auth
+
+# Disallow private application views and API routes from crawling
+Disallow: /dashboard
+Disallow: /new-decision
+Disallow: /history
+Disallow: /insights
 Disallow: /settings
-Disallow: /vault
+Disallow: /decision/
 Disallow: /api/
 
-Sitemap: https://unsent-pk.vercel.app/sitemap.xml
+Sitemap: https://beyond.openminded.vercel.app/sitemap.xml
